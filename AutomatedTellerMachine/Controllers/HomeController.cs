@@ -56,6 +56,21 @@ namespace AutomatedTellerMachine.Controllers
             return View("About");
         }
 
+        protected override void HandleUnknownAction(string actionName)
+        {
+            // log the error
+            // redirect to a common action
+            var completeMessage = string.Format("Server: {0}<br> Browser: {1} <br> Controller: {2}", Server.MachineName, Request.UserAgent, RouteData.Values["controller"]);
+            Response.Write("Oops! You tried to invoke a non-existent action called " + Server.HtmlEncode(actionName) + "<br>");
+            Response.Write(completeMessage);
+        }
+
+        public void UseParams(string id, string name, string controller, string action)
+        {
+            var message = string.Format("Id = {0}<br> Name = {1}<br> Controller = {2}<br> Action = {3}", id, name, controller, action);
+            Response.Write(message);
+        }
+
         public ActionResult Serial(string letterCase)
         {
             var serial = "ASPNETMVC5ATM1";
